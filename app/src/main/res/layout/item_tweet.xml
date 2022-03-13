@@ -37,4 +37,15 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="0.0"
         tools:text="Some relevant and not so much just so like really so so long tweet possibly I decided" />
+
+    <TextView
+        android:id="@+id/tweetTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="9s"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toEndOf="@+id/tvUsername"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

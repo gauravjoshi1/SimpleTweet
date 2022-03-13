@@ -1,7 +1,12 @@
 package com.codepath.apps.restclienttemplate.models
 
+import android.text.format.DateUtils
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Tweet {
     var body: String = ""
@@ -12,7 +17,7 @@ class Tweet {
         fun fromJson(jsonObject: JSONObject): Tweet {
             val tweet = Tweet()
             tweet.body = jsonObject.getString("text")
-            tweet.createdAt = jsonObject.getString("created_at")
+            tweet.createdAt = getRelativeTimeAgo(jsonObject.getString("created_at"))
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"))
 
             return tweet
@@ -26,6 +31,24 @@ class Tweet {
             }
 
             return tweets
+        }
+
+        fun getRelativeTimeAgo(rawJsonData:String): String {
+            val twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
+            val sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
+            sf.isLenient = true
+
+            var relativeDate = ""
+
+            try {
+                val dateMillis = sf.parse(rawJsonData).time
+                relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+                    .toString()
+            } catch (e : ParseException) {
+                e.printStackTrace()
+            }
+
+            return relativeDate
         }
     }
 }
