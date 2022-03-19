@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class TweetsAdapter(val tweets : ArrayList<Tweet>): RecyclerView.Adapter<TweetsA
         holder.tvUserName.text = tweet.user?.name
         holder.tvTweetBody.text = tweet.body
         holder.tweetTime.text = tweet.createdAt
+
         Glide.with(holder.itemView).load(tweet.user?.publicImageUrl).into(holder.ivProfileImage)
     }
 

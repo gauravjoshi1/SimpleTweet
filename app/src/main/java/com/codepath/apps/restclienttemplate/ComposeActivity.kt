@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate
 
 import android.content.Intent
+import android.graphics.Color
 import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,7 @@ class ComposeActivity : AppCompatActivity() {
     lateinit var client: TwitterClient
     lateinit var tvCharacterCount: TextView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_compose)
@@ -29,6 +31,7 @@ class ComposeActivity : AppCompatActivity() {
         etCompose = findViewById(R.id.etTweetCompose)
         btnTweet = findViewById(R.id.btnTweet)
         tvCharacterCount = findViewById(R.id.tvCharacterCount)
+        val originalTweetColor = tvCharacterCount.currentTextColor
 
         client = TwitterApplication.getRestClient(this)
 
@@ -47,6 +50,12 @@ class ComposeActivity : AppCompatActivity() {
                 val remainingTweetLength = 280 - lengthOfTweet
                 val charactersRemaining = "Characters Remaining: $remainingTweetLength/280"
                 tvCharacterCount.text = charactersRemaining
+
+                // change color depending on the number of remaining characters
+                if (remainingTweetLength < 0)
+                    tvCharacterCount.setTextColor(Color.parseColor("#FF0000"))
+                else
+                    tvCharacterCount.setTextColor(originalTweetColor)
             }
 
         })
@@ -65,7 +74,7 @@ class ComposeActivity : AppCompatActivity() {
 
             // 2. Make sure the tweet is under character limit
             else if (tweetContent.length > 280) {
-                Toast.makeText(this, "Tweet is too long. 140 character limit", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Tweet is too long. 280 character limit", Toast.LENGTH_SHORT).show()
             }
             else {
                 client.publishTweet(tweetContent, object: JsonHttpResponseHandler(){
